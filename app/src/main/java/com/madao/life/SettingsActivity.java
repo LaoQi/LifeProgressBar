@@ -15,6 +15,7 @@ import android.widget.NumberPicker;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.EditTextPreference;
@@ -88,22 +89,24 @@ public class SettingsActivity extends AppCompatActivity {
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
 
+        private Context mContext;
         SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener =
                 (sharedPreferences, key) -> {
-                    Log.d(getTag(), "preference change " + key);
                     Intent intent = new Intent(BroadcastName);
-                    intent.setPackage(requireContext().getPackageName());
-                    requireContext().sendBroadcast(intent);
+                    intent.setPackage(mContext.getPackageName());
+                    mContext.sendBroadcast(intent);
                 };
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            mContext = getContext();
+            SharedPreferences sp = getPreferenceManager().getSharedPreferences();
+            if (sp != null) {
+                sp.registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
+            }
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
 
             EditTextPreference birthdayPreference = findPreference(PreferenceKeyBirthday);
-
-            Objects.requireNonNull(getPreferenceManager().getSharedPreferences())
-                    .registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
 
             if (birthdayPreference != null) {
                 birthdayPreference.setOnBindEditTextListener(this::bindDatePicker);
@@ -158,7 +161,9 @@ public class SettingsActivity extends AppCompatActivity {
             picker.setMinValue(3);
             picker.setValue(age);
             picker.setOnValueChangedListener(
-                    (picker1, oldVal, newVal) -> editText.setText(String.format("%d", newVal)));
+                    (picker1, oldVal, newVal) -> {
+                        editText.setText(String.format("%d", newVal));
+                    });
         }
 
         @SuppressLint("DefaultLocale")
