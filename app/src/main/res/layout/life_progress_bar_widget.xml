@@ -1,0 +1,217 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/widgetBackground"
+    style="@style/Widget.LifeProgressBar.AppWidget.Container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:textAlignment="center"
+    android:background="#F4444444"
+    android:theme="@style/Theme.LifeProgressBar.AppWidgetContainer">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:paddingBottom="12dp"
+            android:text="@string/empty_text"
+            android:textAlignment="center"
+            android:textSize="24sp" />
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/countdown"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:paddingTop="12dp"-->
+        <!--            android:paddingBottom="12dp"-->
+        <!--            android:text="@string/appwidget_text"-->
+        <!--            android:textAlignment="center"-->
+        <!--            android:textSize="16sp" />-->
+
+        <TextView
+            android:id="@+id/LastLife"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:paddingBottom="6dp"
+            android:text="@string/empty_text" />
+
+        <ProgressBar
+            android:id="@+id/LastLifeBarGreen"
+            style="@style/InnerGreenProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/LastLifeBarBlue"
+            style="@style/InnerBlueProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/LastLifeBarYellow"
+            style="@style/InnerYellowProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/LastLifeBarRed"
+            style="@style/InnerRedProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/LastDay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:paddingBottom="6dp"
+            android:text="@string/empty_text" />
+
+        <ProgressBar
+            android:id="@+id/LastDayBarGreen"
+            style="@style/InnerGreenProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/LastDayBarBlue"
+            style="@style/InnerBlueProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/LastDayBarYellow"
+            style="@style/InnerYellowProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/LastDayBarRed"
+            style="@style/InnerRedProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/LastWeek"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:paddingBottom="6dp"
+            android:text="@string/empty_text" />
+
+        <ProgressBar
+            android:id="@+id/LastWeekBarGreen"
+            style="@style/InnerGreenProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/LastWeekBarBlue"
+            style="@style/InnerBlueProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/LastWeekBarYellow"
+            style="@style/InnerYellowProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/LastWeekBarRed"
+            style="@style/InnerRedProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/LastMonth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:paddingBottom="6dp"
+            android:text="@string/empty_text" />
+
+        <ProgressBar
+            android:id="@+id/LastMonthBarGreen"
+            style="@style/InnerGreenProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/LastMonthBarBlue"
+            style="@style/InnerBlueProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/LastMonthBarYellow"
+            style="@style/InnerYellowProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/LastMonthBarRed"
+            style="@style/InnerRedProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/LastYear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:paddingBottom="6dp"
+            android:text="@string/empty_text" />
+
+        <ProgressBar
+            android:id="@+id/LastYearBarGreen"
+            style="@style/InnerGreenProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/LastYearBarBlue"
+            style="@style/InnerBlueProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/LastYearBarYellow"
+            style="@style/InnerYellowProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/LastYearBarRed"
+            style="@style/InnerRedProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</FrameLayout>

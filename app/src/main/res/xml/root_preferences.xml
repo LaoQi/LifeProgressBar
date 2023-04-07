@@ -1,0 +1,56 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/empty_text">
+
+        <EditTextPreference
+            android:defaultValue="2000/1/1"
+            app:dialogLayout="@layout/date_picker"
+            app:key="birthday"
+            app:title="@string/birthday"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            android:defaultValue="76"
+            app:dialogLayout="@layout/lifetime_picker"
+            app:key="lifetime"
+            app:title="@string/lifetime"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@array/week_selector_entities"
+            android:entryValues="@array/week_selector_values"
+            android:key="first_day_of_week"
+            android:title="@string/first_day_of_week"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/empty_text">
+
+        <com.skydoves.colorpickerpreference.ColorPickerPreference
+            android:key="font_color"
+            android:title="@string/font_color"
+            android:summary="@string/empty_text"
+            app:preference_attachAlphaSlideBar="true"
+            app:preference_attachBrightnessSlideBar="true"
+            app:preference_colorBox_radius="26dp"
+            app:preference_dialog_negative="@android:string/cancel"
+            app:preference_dialog_positive="@android:string/yes"
+            app:preference_dialog_title="@string/font_color"
+            app:preference_selector="@drawable/wheel"/>
+
+        <com.skydoves.colorpickerpreference.ColorPickerPreference
+            android:key="background_color"
+            android:title="@string/background_color"
+            android:summary="@string/empty_text"
+            app:preference_attachAlphaSlideBar="true"
+            app:preference_attachBrightnessSlideBar="true"
+            app:preference_colorBox_radius="26dp"
+            app:preference_dialog_negative="@android:string/cancel"
+            app:preference_dialog_positive="@android:string/yes"
+            app:preference_dialog_title="@string/background_color"
+            app:preference_selector="@drawable/wheel"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

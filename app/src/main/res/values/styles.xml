@@ -1,0 +1,28 @@
+<resources>
+
+    <style name="Widget.LifeProgressBar.AppWidget.Container" parent="android:Widget">
+        <item name="android:id">@android:id/background</item>
+        <item name="android:background">?android:attr/colorBackground</item>
+    </style>
+
+    <style name="Widget.LifeProgressBar.AppWidget.InnerView" parent="android:Widget">
+        <item name="android:background">?android:attr/colorBackground</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
+
+    <style name="InnerBlueProgressBar" parent="android:Widget.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/shape_inner_progressbar_blue</item>
+    </style>
+
+    <style name="InnerGreenProgressBar" parent="android:Widget.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/shape_inner_progressbar_green</item>
+    </style>
+
+    <style name="InnerYellowProgressBar" parent="android:Widget.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/shape_inner_progressbar_yellow</item>
+    </style>
+
+    <style name="InnerRedProgressBar" parent="android:Widget.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/shape_inner_progressbar_red</item>
+    </style>
+</resources>

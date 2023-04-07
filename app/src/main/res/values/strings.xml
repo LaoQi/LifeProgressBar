@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">人生进度条</string>
+    <!-- Settings Activity Title -->
+    <string name="title_activity_settings">设置</string>
+
+    <string name="empty_text"> </string>
+    <string name="app_widget_description">人生进度条</string>
+
+    <string name="unset_value">未设置</string>
+
+    <!-- Messages Preferences -->
+    <string name="birthday">出生日期</string>
+    <string name="lifetime">想活多久</string>
+    <string name="first_day_of_week">第一天周几</string>
+    <string name="font_color">字体颜色</string>
+    <string name="background_color">背景颜色</string>
+</resources>
