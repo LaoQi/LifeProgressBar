@@ -15,7 +15,6 @@ import android.widget.NumberPicker;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.EditTextPreference;
@@ -37,6 +36,8 @@ public class SettingsActivity extends AppCompatActivity {
     public final static String PreferenceKeyFirstDayOfWeek = "first_day_of_week";
     public final static String PreferenceKeyFontColor = "font_color";
     public final static String PreferenceKeyBackgroundColor = "background_color";
+
+    public final static String PreferenceKeyEnableLunar = "enable_lunar";
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
     @Override
@@ -170,7 +171,7 @@ public class SettingsActivity extends AppCompatActivity {
         private void bindDatePicker(EditText editText) {
             View root = editText.getRootView();
 
-            final Calendar c = Calendar.getInstance();
+            final Calendar calendar = Calendar.getInstance();
             final DateBean db = new DateBean();
 
             String date = String.valueOf(editText.getText());
@@ -180,13 +181,11 @@ public class SettingsActivity extends AppCompatActivity {
                 editText.setText(db.toString());
             }
 
-            c.set(db.getYear(), db.getMonth(), db.getDay());
-
             NumberPicker yearPicker = root.findViewById(R.id.date_picker_year);
             NumberPicker monthPicker = root.findViewById(R.id.date_picker_month);
             NumberPicker dayPicker = root.findViewById(R.id.date_picker_day);
 
-            yearPicker.setMaxValue(2099);
+            yearPicker.setMaxValue(calendar.get(Calendar.YEAR));
             yearPicker.setMinValue(1900);
             yearPicker.setValue(db.getYear());
             yearPicker.setOnValueChangedListener((picker, oldVal, newVal) -> {

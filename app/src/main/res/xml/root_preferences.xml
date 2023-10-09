@@ -24,6 +24,10 @@
             android:key="first_day_of_week"
             android:title="@string/first_day_of_week"
             app:useSimpleSummaryProvider="true" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="enable_lunar"
+            android:title="@string/enable_lunar" />
 
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/empty_text">

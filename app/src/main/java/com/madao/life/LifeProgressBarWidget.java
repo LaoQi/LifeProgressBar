@@ -37,10 +37,6 @@ public class LifeProgressBarWidget extends AppWidgetProvider {
         private final int[] ColorBar;
         private int value;
 
-        public int getValue() {
-            return value;
-        }
-
         ProgressBar(int textBar, int[] colorBar, int textColor) {
             TextBar = textBar;
             ColorBar = colorBar;
@@ -97,6 +93,8 @@ public class LifeProgressBarWidget extends AppWidgetProvider {
         String firstDayOfWeekString = sp.getString(SettingsActivity.PreferenceKeyFirstDayOfWeek, "1");
         int firstDayOfWeek = Integer.parseInt(firstDayOfWeekString);
 
+        boolean enableLunar = sp.getBoolean(SettingsActivity.PreferenceKeyEnableLunar, false);
+
         int textColor = sp.getInt(SettingsActivity.PreferenceKeyFontColor, Color.WHITE);
         int bgColor = sp.getInt(SettingsActivity.PreferenceKeyBackgroundColor, Color.GRAY);
 
@@ -119,19 +117,20 @@ public class LifeProgressBarWidget extends AppWidgetProvider {
                     String.format("离终点还有%d年%d天", lastDays / 365 , lastDays % 365));
         }
 
-        var lifeBar = new ProgressBar(R.id.LastLife, LastLifeBarIds, textColor)
+        // lifeBar
+        new ProgressBar(R.id.LastLife, LastLifeBarIds, textColor)
                 .show(views, (int) (lastDays / 365), lifetime, "你的人生还剩下超过 %d年")
-                .then(views, value -> value < 0, "已去世超过 %d年", -lastDays/365);
+                .then(views, value -> value < 0, "已去世超过 %d年", -lastDays / 365);
 
-        var dayBar = new ProgressBar(R.id.LastDay, LastDayBarIds, textColor)
+        new ProgressBar(R.id.LastDay, LastDayBarIds, textColor)
                 .show(views, 23 - now.get(Calendar.HOUR_OF_DAY), 24, "今天还余下大约 %d小时")
                 .then(views, value -> value <= 0, "今天还剩不到 1小时");
 
-        var weekBar = new ProgressBar(R.id.LastWeek, LastWeekBarIds, textColor)
+        new ProgressBar(R.id.LastWeek, LastWeekBarIds, textColor)
                 .show(views, (7 + firstDayOfWeek - now.get(Calendar.DAY_OF_WEEK)) % 7, 7, "本周还剩%d天")
                 .then(views, value -> value <= 0, "本周还剩不到 1天");
 
-       var monthBar = new ProgressBar(R.id.LastMonth, LastMonthBarIds, textColor)
+       new ProgressBar(R.id.LastMonth, LastMonthBarIds, textColor)
                 .show(views,
                         now.getActualMaximum(Calendar.DAY_OF_MONTH) - now.get(Calendar.DAY_OF_MONTH),
                         now.getActualMaximum(Calendar.DAY_OF_MONTH),
@@ -139,7 +138,7 @@ public class LifeProgressBarWidget extends AppWidgetProvider {
                .then(views, value -> value <= 0, "本月还剩不到 1天");
 
         new ProgressBar(R.id.LastYear, LastYearBarIds, textColor)
-                .show(views, 11 - now.get(Calendar.MONTH), 12, "今年还剩%d个月")
+                .show(views, enableLunar ? LunarUtil.RestOfYear() : 11 - now.get(Calendar.MONTH), 12, "今年还剩%d个月")
                 .then(views, value -> value <= 0, "今年还剩不到 1月");
     }
 
