@@ -28,33 +28,30 @@
             android:defaultValue="false"
             android:key="enable_lunar"
             android:title="@string/enable_lunar" />
-
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/empty_text">
-
         <com.skydoves.colorpickerpreference.ColorPickerPreference
             android:key="font_color"
-            android:title="@string/font_color"
             android:summary="@string/empty_text"
+            android:title="@string/font_color"
             app:preference_attachAlphaSlideBar="true"
             app:preference_attachBrightnessSlideBar="true"
             app:preference_colorBox_radius="26dp"
             app:preference_dialog_negative="@android:string/cancel"
             app:preference_dialog_positive="@android:string/yes"
             app:preference_dialog_title="@string/font_color"
-            app:preference_selector="@drawable/wheel"/>
-
+            app:preference_selector="@drawable/wheel" />
         <com.skydoves.colorpickerpreference.ColorPickerPreference
             android:key="background_color"
-            android:title="@string/background_color"
             android:summary="@string/empty_text"
+            android:title="@string/background_color"
             app:preference_attachAlphaSlideBar="true"
             app:preference_attachBrightnessSlideBar="true"
             app:preference_colorBox_radius="26dp"
             app:preference_dialog_negative="@android:string/cancel"
             app:preference_dialog_positive="@android:string/yes"
             app:preference_dialog_title="@string/background_color"
-            app:preference_selector="@drawable/wheel"/>
+            app:preference_selector="@drawable/wheel" />
+
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/empty_text"/>
 
 </PreferenceScreen>

@@ -60,6 +60,15 @@ public class LifeProgressBarWidget extends AppWidgetProvider {
             return this;
         }
 
+        public ProgressBar then(RemoteViews views, boolean cond, int value, int maxVal) {
+            if (cond) {
+                this.value = value;
+                views.setTextColor(TextBar, TextColor);
+                setProgressBar(views, value * 100 / maxVal);
+            }
+            return this;
+        }
+
         private void setProgressBar(RemoteViews views, int progress) {
             for (int id : ColorBar) {
                 views.setViewVisibility(id, View.GONE);
@@ -138,8 +147,10 @@ public class LifeProgressBarWidget extends AppWidgetProvider {
                .then(views, value -> value <= 0, "本月还剩不到 1天");
 
         new ProgressBar(R.id.LastYear, LastYearBarIds, textColor)
-                .show(views, enableLunar ? LunarUtil.RestOfYear() : 11 - now.get(Calendar.MONTH), 12, "今年还剩%d个月")
-                .then(views, value -> value <= 0, "今年还剩不到 1月");
+                .show(views, 11 - now.get(Calendar.MONTH), 12, "今年还剩%d个月")
+                .then(views, value -> value <= 0, "今年还剩不到 1月")
+                .then(views, enableLunar, LunarUtil.DiffDayOfNewYear(), LunarUtil.TotalDaysOfYear())
+                .then(views, value -> enableLunar, "距离新年还剩 " + LunarUtil.DiffDayOfNewYear() + "天");
     }
 
     @Override

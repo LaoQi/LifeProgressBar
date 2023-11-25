@@ -37,17 +37,26 @@ public class LunarUtil {
         return calendar;
     }
 
-    public static int RestOfYear() {
+    public static int DiffDayOfNewYear() {
         Calendar now = Calendar.getInstance();
         Calendar newYear = GetNewYearDay(now.get(Calendar.YEAR));
-
-        int month = newYear.get(Calendar.MONTH) - now.get(Calendar.MONTH);
         if (newYear.before(now)) {
             newYear = GetNewYearDay(now.get(Calendar.YEAR) + 1);
-            month = 12 - now.get(Calendar.MONTH) + newYear.get(Calendar.MONTH);
         }
-        if (month == 1 && newYear.get(Calendar.DATE) + (now.getActualMaximum(Calendar.DAY_OF_MONTH) - now.get(Calendar.DATE)) < 30)
-            return 0;
-        return month;
+
+        return (int) ((newYear.getTimeInMillis() - now.getTimeInMillis()) / 86400 / 1000);
+    }
+
+    public static int TotalDaysOfYear() {
+        Calendar now = Calendar.getInstance();
+        Calendar lastYear = GetNewYearDay(now.get(Calendar.YEAR));
+        Calendar newYear = GetNewYearDay(now.get(Calendar.YEAR));
+        if (newYear.before(now)) {
+            newYear = GetNewYearDay(now.get(Calendar.YEAR) + 1);
+        } else {
+            lastYear = GetNewYearDay(now.get(Calendar.YEAR) - 1);
+        }
+
+        return (int) ((newYear.getTimeInMillis() - lastYear.getTimeInMillis()) / 86400 / 1000);
     }
 }
