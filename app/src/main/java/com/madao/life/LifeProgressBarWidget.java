@@ -1,6 +1,7 @@
 package com.madao.life;
 
 import android.annotation.SuppressLint;
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
@@ -8,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -26,6 +28,7 @@ public class LifeProgressBarWidget extends AppWidgetProvider {
     private static final int[] LastMonthBarIds = new int[]{R.id.LastMonthBarGreen, R.id.LastMonthBarBlue, R.id.LastMonthBarYellow, R.id.LastMonthBarRed};
     private static final int[] LastWeekBarIds = new int[]{R.id.LastWeekBarGreen, R.id.LastWeekBarBlue, R.id.LastWeekBarYellow, R.id.LastWeekBarRed};
     private static final int[] LastYearBarIds = new int[]{R.id.LastYearBarGreen, R.id.LastYearBarBlue, R.id.LastYearBarYellow, R.id.LastYearBarRed};
+    private static final String TAG = "LifeProgressBarWidget";
 
     public interface Condition {
         boolean compare(int value);
@@ -91,21 +94,21 @@ public class LifeProgressBarWidget extends AppWidgetProvider {
     @SuppressLint("DefaultLocale")
     static void updateAppWidget(Context context, RemoteViews views) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        String lifetimeString = sp.getString(SettingsActivity.PreferenceKeyLifetime, "76");
+        String lifetimeString = sp.getString(Constant.PreferenceKeyLifetime, "76");
         int lifetime = Integer.parseInt(lifetimeString);
         Calendar birthday = Calendar.getInstance(Locale.CHINA);
 
-        String birthdayString = sp.getString(SettingsActivity.PreferenceKeyBirthday, "2000/1/1");
+        String birthdayString = sp.getString(Constant.PreferenceKeyBirthday, "2000/1/1");
         DateBean db = new DateBean();
         db.fromString(birthdayString);
 
-        String firstDayOfWeekString = sp.getString(SettingsActivity.PreferenceKeyFirstDayOfWeek, "1");
+        String firstDayOfWeekString = sp.getString(Constant.PreferenceKeyFirstDayOfWeek, "1");
         int firstDayOfWeek = Integer.parseInt(firstDayOfWeekString);
 
-        boolean enableLunar = sp.getBoolean(SettingsActivity.PreferenceKeyEnableLunar, false);
+        boolean enableLunar = sp.getBoolean(Constant.PreferenceKeyEnableLunar, false);
 
-        int textColor = sp.getInt(SettingsActivity.PreferenceKeyFontColor, Color.WHITE);
-        int bgColor = sp.getInt(SettingsActivity.PreferenceKeyBackgroundColor, Color.GRAY);
+        int textColor = sp.getInt(Constant.PreferenceKeyFontColor, Color.WHITE);
+        int bgColor = sp.getInt(Constant.PreferenceKeyBackgroundColor, Color.GRAY);
 
         birthday.set(db.getYear(), db.getMonth() - 1, db.getDay());
         var now = Calendar.getInstance(Locale.CHINA);
@@ -155,11 +158,27 @@ public class LifeProgressBarWidget extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+//        ComponentName componentName = new ComponentName(context, LifeProgressBarWidget.class);
+//        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.life_progress_bar_widget);
+//        appWidgetManager.updateAppWidget(componentName, views);
+
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
+            Log.i(TAG, "onReceive: update widget " + appWidgetId + " " + context.getPackageName());
             // Construct the RemoteViews object
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.life_progress_bar_widget);
             updateAppWidget(context, views);
+
+            Intent intent = new Intent(Constant.BroadcastName);
+            intent.setPackage(context.getPackageName());
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                    /* context = */ context,
+                    /* requestCode = */ 0,
+                    /* intent = */ intent,
+                    /* flags = */ PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+            );
+            views.setOnClickPendingIntent(R.id.widgetBackground, pendingIntent);
+
             // Instruct the widget manager to update the widget
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }
@@ -169,10 +188,21 @@ public class LifeProgressBarWidget extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
         String action = intent.getAction();
-        if (SettingsActivity.BroadcastName.equals(action)) {
+        Log.i(TAG, "onReceive: " + action);
+        if (Constant.BroadcastName.equals(action)) {
             int[] appWidgetIds = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, this.getClass()));
             if (appWidgetIds != null && appWidgetIds.length > 0) {
                 this.onUpdate(context, AppWidgetManager.getInstance(context), appWidgetIds);
+            } else {
+                Log.w(TAG, "onReceive: not found widget");
+            }
+        }
+        if (Constant.MiuiBroadcast.equals(action)) {
+            int[] appWidgetIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
+            if (appWidgetIds != null && appWidgetIds.length > 0) {
+                this.onUpdate(context, AppWidgetManager.getInstance(context), appWidgetIds);
+            } else {
+                Log.w(TAG, "onReceive: not found widget");
             }
         }
     }

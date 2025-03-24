@@ -15,6 +15,7 @@ import android.widget.NumberPicker;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.EditTextPreference;
@@ -30,15 +31,16 @@ import java.util.Objects;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    public final static String BroadcastName = "com.madao.life.APPWIDGET_UPDATE";
-    public final static String PreferenceKeyBirthday = "birthday";
-    public final static String PreferenceKeyLifetime = "lifetime";
-    public final static String PreferenceKeyFirstDayOfWeek = "first_day_of_week";
-    public final static String PreferenceKeyFontColor = "font_color";
-    public final static String PreferenceKeyBackgroundColor = "background_color";
-
-    public final static String PreferenceKeyEnableLunar = "enable_lunar";
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+    private final static String TAG = "SettingsActivity";
+
+    private final SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener =
+            (sharedPreferences, key) -> {
+                Intent intent = new Intent(Constant.BroadcastName);
+                intent.setPackage(getPackageName());
+                sendBroadcast(intent);
+                Log.i(TAG, "ChangeSetting " + key + " SendBroadcast: " + Constant.BroadcastName);
+            };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +49,7 @@ public class SettingsActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.settings, new SettingsFragment())
+                    .replace(R.id.settings, new SettingsFragment(onSharedPreferenceChangeListener))
                     .commit();
         }
         ActionBar actionBar = getSupportActionBar();
@@ -90,39 +92,58 @@ public class SettingsActivity extends AppCompatActivity {
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
 
-        private Context mContext;
-        SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener =
-                (sharedPreferences, key) -> {
-                    Intent intent = new Intent(BroadcastName);
-                    intent.setPackage(mContext.getPackageName());
-                    mContext.sendBroadcast(intent);
-                };
+        private final static String TAG = "SettingsFragment";
+        private final SharedPreferences.OnSharedPreferenceChangeListener listener;
+
+        public SettingsFragment(SharedPreferences.OnSharedPreferenceChangeListener l) {
+            listener = l;
+        }
+
+        @Override
+        public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
+            savedInstanceState.putBoolean("registered", true);
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            SharedPreferences sp = getPreferenceManager().getSharedPreferences();
+            if (sp != null) {
+                Log.w(TAG, "onResume onCreatePreferences: register");
+                sp.registerOnSharedPreferenceChangeListener(listener);
+            }
+        }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+            SharedPreferences sp = getPreferenceManager().getSharedPreferences();
+            if (sp != null) {
+                Log.w(TAG, "onPause onCreatePreferences: unregister");
+                sp.unregisterOnSharedPreferenceChangeListener(listener);
+            }
+        }
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            mContext = getContext();
-            SharedPreferences sp = getPreferenceManager().getSharedPreferences();
-            if (sp != null) {
-                sp.registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
-            }
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
 
-            EditTextPreference birthdayPreference = findPreference(PreferenceKeyBirthday);
+            EditTextPreference birthdayPreference = findPreference(Constant.PreferenceKeyBirthday);
 
             if (birthdayPreference != null) {
                 birthdayPreference.setOnBindEditTextListener(this::bindDatePicker);
             }
 
-            EditTextPreference lifetimePreference = findPreference(PreferenceKeyLifetime);
+            EditTextPreference lifetimePreference = findPreference(Constant.PreferenceKeyLifetime);
             Objects.requireNonNull(lifetimePreference).setOnBindEditTextListener(this::bindLifeTimePicker);
 
-            ColorPickerPreference backgroundColorPreference = findPreference(PreferenceKeyBackgroundColor);
+            ColorPickerPreference backgroundColorPreference = findPreference(Constant.PreferenceKeyBackgroundColor);
             if (backgroundColorPreference != null) {
                 backgroundColorPreference.setDefaultColor(Color.DKGRAY);
                 backgroundColorPreference.getColorPickerView().setFlagView(new CustomFlag(getContext()));
             }
 
-            ColorPickerPreference fontColorPreference = findPreference(PreferenceKeyFontColor);
+            ColorPickerPreference fontColorPreference = findPreference(Constant.PreferenceKeyFontColor);
             if (fontColorPreference != null) {
                 fontColorPreference.setDefaultColor(Color.LTGRAY);
                 fontColorPreference.getColorPickerView().setFlagView(new CustomFlag(getContext()));
@@ -162,9 +183,7 @@ public class SettingsActivity extends AppCompatActivity {
             picker.setMinValue(3);
             picker.setValue(age);
             picker.setOnValueChangedListener(
-                    (picker1, oldVal, newVal) -> {
-                        editText.setText(String.format("%d", newVal));
-                    });
+                    (picker1, oldVal, newVal) -> editText.setText(String.format("%d", newVal)));
         }
 
         @SuppressLint("DefaultLocale")
